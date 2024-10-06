@@ -1,6 +1,8 @@
+import { store } from "@/store";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { useEffect } from "react";
+import { Provider } from "react-redux";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -22,8 +24,10 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="index" />
-    </Stack>
+    <Provider store={store}>
+      <Stack>
+        <Stack.Screen name="index" />
+      </Stack>
+    </Provider>
   );
 }
