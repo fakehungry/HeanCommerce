@@ -1,0 +1,29 @@
+{
+  "env": {
+    "es2021": true,
+    "browser": true,
+    "react-native/react-native": true
+  },
+  "extends": ["plugin:react/recommended", "airbnb", "airbnb/hooks", "prettier", "prettier/react"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "react-native"],
+  "rules": {
+    "eslint-plugin-import/order": "warn",
+    "react-native/no-unused-styles": 2,
+    "react-native/split-platform-components": 2,
+    "react-native/no-inline-styles": 2,
+    "react-native/no-color-literals": 2,
+    "react-native/no-raw-text": 2,
+    "react-native/no-single-element-style-arrays": 2,
+    "@typescript-eslint/no-unused-vars": "off",
+    "no-unused-vars": "warn",
+    "eslint-plugin-import/no-unassigned-import": "warn",
+    "eslint-plugin-import/no-unused-modules": "warn"
+  }
+}
