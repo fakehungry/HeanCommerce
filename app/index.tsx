@@ -1,30 +1,30 @@
-import { useAppDispatch, useAppSelector } from "@/store/hook";
-import { Pressable, Text, View } from "react-native";
-import { Colors } from "@/constants/Colors";
-import { toggleTheme } from "@/features/theme/theme.slice";
+import { toggleTheme } from '@/features/theme/theme.slice';
+import { useAppDispatch, useAppSelector } from '@/store/hook';
+import { Pressable } from 'react-native';
+import styled from 'styled-components/native';
 
 export default function Index() {
-  const theme = useAppSelector((state) => state.theme) as "light" | "dark";
+  const theme = useAppSelector((state) => state.theme) as 'light' | 'dark';
   const dispatch = useAppDispatch();
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: Colors[theme].primary,
-      }}
-    >
+    <Container>
       <Pressable onPress={() => dispatch(toggleTheme())}>
-        <Text
-          style={{
-            color: Colors[theme].opposite_primary,
-          }}
-        >
-          Toggle Theme
-        </Text>
+        <StyledText>Toggle Theme</StyledText>
       </Pressable>
-    </View>
+    </Container>
   );
 }
+
+const Container = styled.View`
+  flex: 1;
+  background-color: ${({ theme }) => theme.primary};
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledText = styled.Text`
+  font-family: 'Lato-Regular';
+  font-size: 20px;
+  color: ${({ theme }) => theme.opposite_primary};
+`;

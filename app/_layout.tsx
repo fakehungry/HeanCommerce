@@ -1,16 +1,17 @@
-import { store } from "@/store";
-import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
-import { useEffect } from "react";
-import { Provider } from "react-redux";
+import AppThemeProvider from '@/components/common/AppThemeProvider';
+import { store } from '@/store';
+import { useFonts } from 'expo-font';
+import { Stack } from 'expo-router';
+import { useEffect } from 'react';
+import { Provider } from 'react-redux';
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    "Lato-Regular": require("../assets/fonts/Lato-Regular.ttf"),
-    "Lato-Black": require("../assets/fonts/Lato-Black.ttf"),
-    "Lato-Bold": require("../assets/fonts/Lato-Bold.ttf"),
-    "Lato-Light": require("../assets/fonts/Lato-Light.ttf"),
-    "Lato-Thin": require("../assets/fonts/Lato-Thin.ttf"),
+    'Lato-Regular': require('../assets/fonts/Lato-Regular.ttf'),
+    'Lato-Black': require('../assets/fonts/Lato-Black.ttf'),
+    'Lato-Bold': require('../assets/fonts/Lato-Bold.ttf'),
+    'Lato-Light': require('../assets/fonts/Lato-Light.ttf'),
+    'Lato-Thin': require('../assets/fonts/Lato-Thin.ttf'),
   });
 
   useEffect(() => {
@@ -25,9 +26,12 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <Stack>
-        <Stack.Screen name="index" />
-      </Stack>
+      <AppThemeProvider>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </AppThemeProvider>
     </Provider>
   );
 }
