@@ -1,0 +1,87 @@
+import { Ionicons } from '@expo/vector-icons';
+import { ImageSourcePropType } from 'react-native';
+import styled from 'styled-components/native';
+
+interface ICardProps {
+  source: ImageSourcePropType;
+  title: string;
+  description: string;
+  price: number;
+  onAddToCart?: () => void;
+}
+
+export default function Card(props: ICardProps) {
+  const { source, title, description, price, onAddToCart } = props;
+
+  return (
+    <Container>
+      <StyledImage source={source} />
+      <Content>
+        <Title>{title}</Title>
+        <Description>{description}</Description>
+      </Content>
+      <Footer>
+        <Price>${price}</Price>
+        <AddToCart onPress={onAddToCart}>
+          <Ionicons name="add-outline" size={24} />
+        </AddToCart>
+      </Footer>
+    </Container>
+  );
+}
+
+const Container = styled.View`
+  border: 1px solid ${({ theme }) => theme.colors.gray};
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  width: 170px;
+  height: 240px;
+`;
+
+const StyledImage = styled.Image`
+  width: 80px;
+  height: 60px;
+  margin-top: 16px;
+`;
+
+const Content = styled.View`
+  display: flex;
+  gap: 4px;
+  align-items: flex-start;
+`;
+
+const Title = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.family.black};
+  font-size: ${({ theme }) => theme.fonts.size.xl};
+  color: ${({ theme }) => theme.colors.opposite_primary};
+`;
+
+const Description = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.family.regular};
+  font-size: ${({ theme }) => theme.fonts.size.md};
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const Footer = styled.View`
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+const Price = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.family.black};
+  font-size: ${({ theme }) => theme.fonts.size.xxl};
+  color: ${({ theme }) => theme.colors.opposite_primary};
+`;
+
+const AddToCart = styled.TouchableOpacity`
+  background-color: ${({ theme }) => theme.colors.tertiary};
+  padding: 8px;
+  border-radius: 12px;
+`;
