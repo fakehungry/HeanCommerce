@@ -28,7 +28,7 @@ export default function RootLayout() {
     <Provider store={store}>
       <AppThemeProvider>
         <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(tab)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
         </Stack>
       </AppThemeProvider>
