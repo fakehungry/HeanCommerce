@@ -2,7 +2,7 @@ import AppThemeProvider from '@/components/common/AppThemeProvider';
 import { store } from '@/store';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 
 export default function RootLayout() {

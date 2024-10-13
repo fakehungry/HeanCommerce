@@ -5,6 +5,7 @@ export const Colors = {
     opposite_primary: '#000000',
     opposite_secondary: '#14213d',
     tertiary: '#fca311',
+    gray: '#a3a3a3',
   },
   dark: {
     primary: '#000000',
@@ -12,5 +13,6 @@ export const Colors = {
     opposite_primary: '#ffffff',
     opposite_secondary: '#e5e5e5',
     tertiary: '#fca311',
+    gray: '#a3a3a3',
   },
 };
