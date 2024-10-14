@@ -1,9 +1,17 @@
+import Banner from '@/components/Banner';
 import Carousel from '@/components/Carousel';
 import React from 'react';
 import { Platform, StatusBar } from 'react-native';
 import styled from 'styled-components/native';
 
 export default function Shop() {
+  // TODO: Replace with real data
+  const images = [
+    require('@/assets/images/banner-1.jpg'),
+    require('@/assets/images/banner-2.jpg'),
+    require('@/assets/images/banner-3.jpg'),
+  ];
+
   return (
     <Container>
       <Logo source={require('@/assets/images/logo.png')} />
@@ -11,7 +19,12 @@ export default function Shop() {
       <User>Welcome! Chaikit</User>
       {/* TODO: Implement search bar */}
       <StyledSearchBar placeholder="Search Store" />
-      <Carousel />
+      <Carousel
+        data={images}
+        renderItem={({ item, index }) => {
+          return <Banner source={item} key={index} />;
+        }}
+      />
     </Container>
   );
 }
