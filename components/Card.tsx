@@ -3,7 +3,7 @@ import React from 'react';
 import { ImageSourcePropType } from 'react-native';
 import styled from 'styled-components/native';
 
-interface ICardProps {
+export interface ICardProps {
   source: ImageSourcePropType;
   title: string;
   description: string;
