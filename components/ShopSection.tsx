@@ -3,17 +3,17 @@ import React from 'react';
 import styled from 'styled-components/native';
 import Card from './Card';
 
-import { View } from 'react-native';
 import { ICardProps } from './Card';
 
 interface IShopSectionProps<T extends ICardProps> {
   title: string;
   itemList: T[];
+  loading?: boolean;
   onPressSeeAll?: () => void;
 }
 
 export default function ShopSection<T extends ICardProps>(props: IShopSectionProps<T>) {
-  const { title, itemList, onPressSeeAll } = props;
+  const { title, itemList, loading, onPressSeeAll } = props;
 
   return (
     <Container>
@@ -21,23 +21,30 @@ export default function ShopSection<T extends ICardProps>(props: IShopSectionPro
         <Title>{title}</Title>
         <SeeAll onPress={onPressSeeAll}>See all</SeeAll>
       </Row>
-      <FlashList
-        data={itemList}
-        renderItem={({ item, index }) => {
-          return (
-            <Card
-              key={index}
-              title={item.title}
-              price={item.price}
-              description={item.description}
-              image={item.image}
-            />
-          );
-        }}
-        horizontal
-        estimatedItemSize={240}
-        ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
-      />
+      {loading ? (
+        <Loading />
+      ) : (
+        <FlashListContainer>
+          <FlashList
+            data={itemList}
+            renderItem={({ item, index }) => {
+              return (
+                // TODO: Implement product detail screen
+                <Card
+                  key={index}
+                  title={item.title}
+                  price={item.price}
+                  description={item.description}
+                  image={item.image}
+                />
+              );
+            }}
+            horizontal
+            estimatedItemSize={250}
+            ItemSeparatorComponent={() => <Gap />}
+          />
+        </FlashListContainer>
+      )}
     </Container>
   );
 }
@@ -65,4 +72,20 @@ const SeeAll = styled.Text`
   font-family: ${({ theme }) => theme.fonts.family.regular};
   font-size: ${({ theme }) => theme.fonts.size.l};
   color: ${({ theme }) => theme.colors.tertiary};
+`;
+
+const Gap = styled.View`
+  width: 16px;
+`;
+
+const Loading = styled.ActivityIndicator.attrs(({ theme }) => ({
+  color: theme.colors.tertiary,
+  size: 'large',
+}))`
+  height: 240px;
+`;
+
+const FlashListContainer = styled.View`
+  flex: 1;
+  width: 100%;
 `;

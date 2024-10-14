@@ -96,6 +96,7 @@ const Container = styled.View<{ width?: number; height?: number }>`
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
   align-items: center;
+  align-self: center;
 `;
 
 const List = styled(Animated.FlatList)<{ width?: number; height?: number }>`

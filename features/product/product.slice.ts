@@ -8,8 +8,9 @@ const getAllProductInitialState: GetAllProductResponse = {
   error: null,
 };
 
-export const getAllProduct = createAsyncThunk('product/getAll', async () => {
+export const getAllProduct = createAsyncThunk('product/getAllProduct', async () => {
   const response = await axios.get(`${process.env.EXPO_PUBLIC_FAKE_STORE_API}/products`);
+
   return response.data;
 });
 
