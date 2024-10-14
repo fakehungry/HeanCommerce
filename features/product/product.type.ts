@@ -9,6 +9,6 @@ type Product = {
   image: string;
 };
 
-export interface GetAllProductsResponse extends Api<Product[]> {
+export interface GetAllProductResponse extends Api<Product[]> {
   data: Product[];
 }

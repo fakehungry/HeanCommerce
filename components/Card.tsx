@@ -1,10 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { ImageSourcePropType } from 'react-native';
 import styled from 'styled-components/native';
 
 export interface ICardProps {
-  source: ImageSourcePropType;
+  image: string;
   title: string;
   description: string;
   price: number;
@@ -12,14 +11,14 @@ export interface ICardProps {
 }
 
 export default function Card(props: ICardProps) {
-  const { source, title, description, price, onAddToCart } = props;
+  const { image, title, description, price, onAddToCart } = props;
 
   return (
     <Container>
-      <StyledImage source={source} />
+      <StyledImage source={{ uri: image }} />
       <Content>
-        <Title>{title}</Title>
-        <Description>{description}</Description>
+        <Title numberOfLines={1}>{title}</Title>
+        <Description numberOfLines={1}>{description}</Description>
       </Content>
       <Footer>
         <Price>${price}</Price>

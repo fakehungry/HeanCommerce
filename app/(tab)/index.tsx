@@ -1,6 +1,9 @@
 import Banner from '@/components/Banner';
 import Carousel from '@/components/Carousel';
-import React from 'react';
+import ShopSection from '@/components/ShopSection';
+import { getAllProduct } from '@/features/product/product.slice';
+import { useAppDispatch, useAppSelector } from '@/store/hook';
+import React, { useEffect } from 'react';
 import { Platform, StatusBar } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -11,6 +14,13 @@ export default function Shop() {
     require('@/assets/images/banner-2.jpg'),
     require('@/assets/images/banner-3.jpg'),
   ];
+
+  const dispatch = useAppDispatch();
+  const products = useAppSelector((state) => state.product.getAllProducts.data);
+
+  useEffect(() => {
+    dispatch(getAllProduct());
+  }, []);
 
   return (
     <Container>
@@ -24,6 +34,12 @@ export default function Shop() {
         renderItem={({ item, index }) => {
           return <Banner source={item} key={index} />;
         }}
+      />
+      <ShopSection
+        // TODO: Implement see all screen
+        onPressSeeAll={() => {}}
+        title="Exclusive Offer"
+        itemList={products}
       />
     </Container>
   );

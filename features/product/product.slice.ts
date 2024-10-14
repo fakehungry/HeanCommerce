@@ -1,36 +1,38 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { GetAllProductsResponse } from './product.type';
+import { GetAllProductResponse } from './product.type';
 
-const getAllProductInitialState: GetAllProductsResponse = {
+const getAllProductInitialState: GetAllProductResponse = {
   data: [],
   loading: false,
   error: null,
 };
 
-export const getAllProducts = createAsyncThunk('product/getAll', async () => {
-  const response = await axios.get(`${process.env.FAKE_STORE}/products`);
+export const getAllProduct = createAsyncThunk('product/getAll', async () => {
+  const response = await axios.get(`${process.env.EXPO_PUBLIC_FAKE_STORE_API}/products`);
   return response.data;
 });
 
-export const getAllProductsSlice = createSlice({
-  name: 'getAllProducts',
+const getAllProductSlice = createSlice({
+  name: 'getAllProduct',
   initialState: getAllProductInitialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getAllProducts.pending, (state) => {
+      .addCase(getAllProduct.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getAllProducts.fulfilled, (state, action) => {
+      .addCase(getAllProduct.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload;
       })
-      .addCase(getAllProducts.rejected, (state, action) => {
+      .addCase(getAllProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = new Error();
         state.error.message = action.error.message || 'An error occurred';
       });
   },
 });
+
+export const getAllProductsSliceReducer = getAllProductSlice.reducer;

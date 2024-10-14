@@ -1,9 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
-import themeSliceReducer from "../features/theme/theme.slice";
+import { getAllProductsSliceReducer } from '@/features/product/product.slice';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import themeSliceReducer from '../features/theme/theme.slice';
 
 export const store = configureStore({
   reducer: {
     theme: themeSliceReducer,
+    product: combineReducers({
+      getAllProducts: getAllProductsSliceReducer,
+    }),
   },
 });
 
