@@ -1,4 +1,3 @@
-import { data } from '@/constants/CarouselData';
 import React from 'react';
 import Animated, {
   Extrapolation,
@@ -9,19 +8,19 @@ import Animated, {
 import styled from 'styled-components/native';
 
 interface IPaginationProps {
-  items: (typeof data)[0][];
+  len: number;
   paginationIndex: number;
   scrollX: SharedValue<number>;
 }
 
 export default function Pagination(props: IPaginationProps) {
-  const { items, paginationIndex, scrollX } = props;
+  const { len, paginationIndex, scrollX } = props;
   const width = 360;
-  const round = width * items.length;
+  const round = width * len;
 
   return (
     <Container>
-      {items.map((_, index) => {
+      {Array.from({ length: len }).map((_, index) => {
         const pgAnimatedStyle = useAnimatedStyle(() => {
           const dotWidth = interpolate(
             scrollX.value - 20 / round > 1 ? scrollX.value % round : scrollX.value,

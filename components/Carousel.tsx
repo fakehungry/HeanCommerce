@@ -1,4 +1,3 @@
-import { data } from '@/constants/CarouselData';
 import React, { useEffect, useRef, useState } from 'react';
 import { ViewToken } from 'react-native';
 import Animated, {
@@ -9,22 +8,28 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import styled from 'styled-components/native';
-import CarouselItem from './CarouselItem';
 import Pagination from './Pagination';
 
-// TODO: Implement Carousel component with props
-export default function Carousel() {
+export interface ICarouselProps<T> {
+  data: T[];
+  renderItem: ({ item, index }: { item: T; index: number }) => React.ReactNode;
+  width?: number;
+  height?: number;
+  autoplay?: boolean;
+}
+
+export default function Carousel<T>(props: ICarouselProps<T>) {
+  const { data, width = 360, height = 120, renderItem, autoplay = true } = props;
+
   const scrollX = useSharedValue(0);
   const offset = useSharedValue(0);
 
   const [paginationIndex, setPaginationIndex] = useState(0);
   const [items, setItems] = useState(data);
-  const [isAutoPlay, setIsAutoPlay] = useState(true);
+  const [isAutoPlay, setIsAutoPlay] = useState(autoplay);
   const interval = useRef<NodeJS.Timeout | null>(null);
 
-  const width = 360;
-
-  const ref = useAnimatedRef<Animated.FlatList<(typeof data)[0]>>();
+  const ref = useAnimatedRef<Animated.FlatList<T>>();
 
   // Set viewabilityConfigCallbackPairs
   const onViewableItemsChanged = ({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -63,13 +68,12 @@ export default function Carousel() {
   });
 
   return (
-    <Container>
+    <Container width={width} height={height}>
       <List
         data={items}
         ref={ref}
-        renderItem={(i) => {
-          const { item, index } = { item: i.item as (typeof data)[0], index: i.index };
-          return <CarouselItem item={item} index={index} scrollX={scrollX} />;
+        renderItem={({ item, index }) => {
+          return <>{renderItem({ item: item as T, index })}</>;
         }}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -78,36 +82,23 @@ export default function Carousel() {
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         onEndReached={() => setItems([...items, ...data])}
         scrollEventThrottle={16}
-        onScrollBeginDrag={() => setIsAutoPlay(false)}
-        onScrollEndDrag={() => setIsAutoPlay(true)}
+        onScrollBeginDrag={() => autoplay && setIsAutoPlay(false)}
+        onScrollEndDrag={() => autoplay && setIsAutoPlay(true)}
+        width={width}
+        height={height}
       />
-      <Pagination items={data} paginationIndex={paginationIndex} scrollX={scrollX} />
+      <Pagination len={data.length} paginationIndex={paginationIndex} scrollX={scrollX} />
     </Container>
   );
 }
 
-const Container = styled.View`
-  width: 360px;
-  height: 120px;
+const Container = styled.View<{ width?: number; height?: number }>`
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
   align-items: center;
 `;
 
-const List = styled(Animated.FlatList)`
-  width: 360px;
-  height: 120px;
-`;
-
-const Image = styled.Image`
-  width: 200px;
-  height: 200px;
-`;
-
-const Title = styled.Text`
-  font-size: ${({ theme }) => theme.fonts.size.xxl};
-  color: ${({ theme }) => theme.colors.opposite_primary};
-`;
-
-const Body = styled.Text`
-  font-size: ${({ theme }) => theme.fonts.size.l};
-  color: ${({ theme }) => theme.colors.opposite_primary};
+const List = styled(Animated.FlatList)<{ width?: number; height?: number }>`
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
 `;
