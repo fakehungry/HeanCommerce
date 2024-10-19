@@ -24,14 +24,14 @@ export default function Shop() {
 
   const productCategories = useMemo(() => {
     return {
-      menClothing: products.filter(
+      menClothing: products?.filter(
         (product) => product.category.toLowerCase() === "men's clothing"
       ),
-      womenClothing: products.filter(
+      womenClothing: products?.filter(
         (product) => product.category.toLowerCase() === "women's clothing"
       ),
-      jewelery: products.filter((product) => product.category.toLowerCase() === 'jewelery'),
-      electronics: products.filter((product) => product.category.toLowerCase() === 'electronics'),
+      jewelery: products?.filter((product) => product.category.toLowerCase() === 'jewelery'),
+      electronics: products?.filter((product) => product.category.toLowerCase() === 'electronics'),
     };
   }, [products]);
 
@@ -53,7 +53,7 @@ export default function Shop() {
           // TODO: Implement see all screen
           onPressSeeAll={() => {}}
           title="Exclusive Offer"
-          itemList={products.slice(0, 5)}
+          itemList={products?.slice(0, 5)}
           loading={loading}
         />
         <ShopSection
@@ -87,6 +87,7 @@ const ScrollView = styled.ScrollView.attrs(() => ({
     paddingBottom: 30,
   },
   horizontal: false,
+  showsVerticalScrollIndicator: false,
 }))``;
 
 const Logo = styled.Image`

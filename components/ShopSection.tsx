@@ -5,14 +5,14 @@ import Card from './Card';
 
 import { ICardProps } from './Card';
 
-interface IShopSectionProps<T extends ICardProps> {
+interface IShopSectionProps {
   title: string;
-  itemList: T[];
+  itemList: ICardProps[];
   loading?: boolean;
   onPressSeeAll?: () => void;
 }
 
-export default function ShopSection<T extends ICardProps>(props: IShopSectionProps<T>) {
+export default function ShopSection(props: IShopSectionProps) {
   const { title, itemList, loading, onPressSeeAll } = props;
 
   return (
@@ -27,21 +27,23 @@ export default function ShopSection<T extends ICardProps>(props: IShopSectionPro
         <FlashListContainer>
           <FlashList
             data={itemList}
-            renderItem={({ item, index }) => {
+            renderItem={({ item }) => {
               return (
-                // TODO: Implement product detail screen
                 <Card
-                  key={index}
+                  key={item.id}
+                  id={item.id}
                   title={item.title}
                   price={item.price}
                   description={item.description}
                   image={item.image}
+                  onAddToCart={() => alert('Add to cart')}
                 />
               );
             }}
             horizontal
             estimatedItemSize={250}
             ItemSeparatorComponent={() => <Gap />}
+            showsHorizontalScrollIndicator={false}
           />
         </FlashListContainer>
       )}

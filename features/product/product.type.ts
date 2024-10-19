@@ -12,3 +12,11 @@ export type Product = {
 export interface GetAllProductResponse extends Api<Product[]> {
   data: Product[];
 }
+
+export interface GetProductDetailsBody {
+  id: number;
+}
+
+export interface GetProductDetailsResponse extends Api<Product> {
+  data: Product;
+}

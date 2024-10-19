@@ -2,6 +2,7 @@ import AppThemeProvider from '@/components/common/AppThemeProvider';
 import { store } from '@/store';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 
@@ -30,7 +31,11 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen name="(tab)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
+
+          <Stack.Screen name="product/[id]" options={{ headerShown: false }} />
         </Stack>
+
+        <StatusBar style="auto" />
       </AppThemeProvider>
     </Provider>
   );

@@ -1,8 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React from 'react';
 import styled from 'styled-components/native';
 
 export interface ICardProps {
+  id: number;
   image: string;
   title: string;
   description: string;
@@ -11,15 +13,17 @@ export interface ICardProps {
 }
 
 export default function Card(props: ICardProps) {
-  const { image, title, description, price, onAddToCart } = props;
+  const { id, image, title, description, price, onAddToCart } = props;
 
   return (
     <Container>
-      <StyledImage source={{ uri: image }} />
-      <Content>
-        <Title numberOfLines={1}>{title}</Title>
-        <Description numberOfLines={1}>{description}</Description>
-      </Content>
+      <Navigator onPress={() => router.push({ pathname: '/product/[id]', params: { id } })}>
+        <StyledImage source={{ uri: image }} />
+        <Content>
+          <Title numberOfLines={1}>{title}</Title>
+          <Description numberOfLines={1}>{description}</Description>
+        </Content>
+      </Navigator>
       <Footer>
         <Price>${price}</Price>
         <AddToCart onPress={onAddToCart}>
@@ -35,10 +39,16 @@ const Container = styled.View`
   border-radius: 10px;
   padding: 12px;
   display: flex;
-  gap: 16px;
+  gap: 24px;
   align-items: center;
   width: 170px;
   height: 240px;
+`;
+
+const Navigator = styled.TouchableOpacity`
+  display: flex;
+  gap: 16px;
+  align-items: center;
 `;
 
 const StyledImage = styled.Image`
