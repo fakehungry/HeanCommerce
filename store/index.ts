@@ -1,4 +1,5 @@
 import {
+  getAllCategoriesSliceReducer,
   getAllProductsSliceReducer,
   getProductDetailsSliceReducer,
 } from '@/features/product/product.slice';
@@ -11,6 +12,7 @@ export const store = configureStore({
     product: combineReducers({
       getAllProducts: getAllProductsSliceReducer,
       getProductDetails: getProductDetailsSliceReducer,
+      getAllCategories: getAllCategoriesSliceReducer,
     }),
   },
 });

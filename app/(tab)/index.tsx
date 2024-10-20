@@ -4,7 +4,7 @@ import ShopSection from '@/components/ShopSection';
 import { getAllProduct } from '@/features/product/product.slice';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 import React, { useEffect, useMemo } from 'react';
-import { ImageSourcePropType, Platform, StatusBar } from 'react-native';
+import { ImageSourcePropType, Platform } from 'react-native';
 import styled from 'styled-components/native';
 
 export default function Shop() {
@@ -77,7 +77,7 @@ export default function Shop() {
 
 const Container = styled.SafeAreaView`
   background-color: ${({ theme }) => theme.colors.primary};
-  padding-top: ${Platform.OS === 'android' ? StatusBar.currentHeight : 0};
+  padding-top: ${Platform.OS === 'android' ? '48px' : 0};
 `;
 
 const ScrollView = styled.ScrollView.attrs(() => ({

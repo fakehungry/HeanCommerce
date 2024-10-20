@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {
+  GetAllCategoriesResponse,
   GetAllProductResponse,
   GetProductDetailsBody,
   GetProductDetailsResponse,
@@ -82,4 +83,41 @@ const getProductDetailsSlice = createSlice({
 });
 
 export const getProductDetailsSliceReducer = getProductDetailsSlice.reducer;
+/** End of asyncThunk */
+
+/** GET - Get all product categories
+ *
+ * @endpoint https://fakestoreapi.com/products/categories
+ *
+ * @returns {string[]} List of product categories
+ */
+export const getAllCategories = createAsyncThunk('product/getAllCategories', async () => {
+  const response = await axios.get(`${process.env.EXPO_PUBLIC_FAKE_STORE_API}/products/categories`);
+
+  return response.data;
+});
+
+const getAllCategoriesSlice = createSlice({
+  name: 'getAllCategories',
+  initialState: {} as GetAllCategoriesResponse,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getAllCategories.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllCategories.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(getAllCategories.rejected, (state, action) => {
+        state.loading = false;
+        state.error = new Error();
+        state.error.message = action.error.message || 'An error occurred';
+      });
+  },
+});
+
+export const getAllCategoriesSliceReducer = getAllCategoriesSlice.reducer;
 /** End of asyncThunk */

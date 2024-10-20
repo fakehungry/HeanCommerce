@@ -20,3 +20,7 @@ export interface GetProductDetailsBody {
 export interface GetProductDetailsResponse extends Api<Product> {
   data: Product;
 }
+
+export interface GetAllCategoriesResponse extends Api<string[]> {
+  data: string[];
+}
