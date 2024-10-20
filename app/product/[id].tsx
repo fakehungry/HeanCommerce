@@ -1,6 +1,6 @@
 import AccordionItem from '@/components/AccordionItem';
 import { getAsyncStorage, setAsyncStorage } from '@/features/async-storage';
-import { AsyncStorageKeys } from '@/features/async-storage/async-storage.type';
+import { AsyncStorageKeys, Cart } from '@/features/async-storage/async-storage.type';
 import { getProductDetails } from '@/features/product/product.slice';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,6 +23,7 @@ export default function ProductDetails() {
 
   const [amount, setAmount] = useState('1');
   const [isInCart, setIsInCart] = useState(false);
+  const [existingCart, setExistingCart] = useState<Cart[]>([]);
 
   const openProductDetail = useSharedValue(false);
 
@@ -48,7 +49,16 @@ export default function ProductDetails() {
 
     (async () => {
       const cart = await getAsyncStorage(AsyncStorageKeys.CART);
-      setIsInCart(cart?.split(',').includes(id));
+      if (cart) {
+        setExistingCart(
+          cart.map((item: Cart) => ({
+            productId: item.productId,
+            amount: item.amount,
+          }))
+        );
+        setIsInCart(cart.some((item: Cart) => item.productId === id));
+        setAmount(cart.find((item: Cart) => item.productId === id)?.amount || '1');
+      }
     })();
   }, []);
 
@@ -107,20 +117,24 @@ export default function ProductDetails() {
           <Footer>
             <Button
               onPress={async () => {
-                const existingCart = await getAsyncStorage(AsyncStorageKeys.CART);
-                if (existingCart) {
-                  const joinedCart = `${existingCart},${product?.id}`;
-                  const uniqueCart = new Set(joinedCart.split(','));
-                  const sortedCart = Array.from(uniqueCart).sort((a, b) => Number(a) - Number(b));
-                  await setAsyncStorage(AsyncStorageKeys.CART, Array.from(sortedCart).join(','));
+                if (isInCart) {
+                  router.replace('/cart');
                   return;
                 }
 
-                await setAsyncStorage(AsyncStorageKeys.CART, product?.id?.toString());
+                if (existingCart) {
+                  const joinedCart = [...existingCart, { productId: id as string, amount }];
+                  await setAsyncStorage(AsyncStorageKeys.CART, joinedCart);
+                  setIsInCart(true);
+                  setExistingCart(joinedCart);
+                  return;
+                }
+                setIsInCart(true);
+                setExistingCart([{ productId: id as string, amount }]);
+                await setAsyncStorage(AsyncStorageKeys.CART, [{ productId: id as string, amount }]);
               }}
-              disabled={isInCart}
             >
-              <TextButton>{isInCart ? 'Already In Cart' : 'Add To Cart'}</TextButton>
+              <TextButton>{isInCart ? 'Go to Cart' : 'Add To Cart'}</TextButton>
             </Button>
           </Footer>
         </>
@@ -270,8 +284,7 @@ const Button = styled.TouchableOpacity`
   width: 100%;
   height: 56px;
   border-radius: 20px;
-  background-color: ${({ theme, disabled }) =>
-    disabled ? theme.colors.gray : theme.colors.tertiary};
+  background-color: ${({ theme }) => theme.colors.tertiary};
   justify-content: center;
   align-items: center;
 `;
