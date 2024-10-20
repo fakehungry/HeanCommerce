@@ -1,4 +1,6 @@
 import AccordionItem from '@/components/AccordionItem';
+import { getAsyncStorage, setAsyncStorage } from '@/features/async-storage';
+import { AsyncStorageKeys } from '@/features/async-storage/async-storage.type';
 import { getProductDetails } from '@/features/product/product.slice';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 import { Ionicons } from '@expo/vector-icons';
@@ -20,6 +22,8 @@ export default function ProductDetails() {
   const { data: product, loading } = useAppSelector((state) => state.product.getProductDetails);
 
   const [amount, setAmount] = useState('1');
+  const [isInCart, setIsInCart] = useState(false);
+
   const openProductDetail = useSharedValue(false);
 
   const chevronRotate = useDerivedValue(() => {
@@ -41,6 +45,11 @@ export default function ProductDetails() {
 
   useEffect(() => {
     dispatch(getProductDetails({ id: Number(id) }));
+
+    (async () => {
+      const cart = await getAsyncStorage(AsyncStorageKeys.CART);
+      setIsInCart(cart?.split(',').includes(id));
+    })();
   }, []);
 
   return (
@@ -96,9 +105,22 @@ export default function ProductDetails() {
             </Column>
           </ScrollView>
           <Footer>
-            {/* TODO: Implement add to cart feature */}
-            <Button>
-              <TextButton>Add to Cart</TextButton>
+            <Button
+              onPress={async () => {
+                const existingCart = await getAsyncStorage(AsyncStorageKeys.CART);
+                if (existingCart) {
+                  const joinedCart = `${existingCart},${product?.id}`;
+                  const uniqueCart = new Set(joinedCart.split(','));
+                  const sortedCart = Array.from(uniqueCart).sort((a, b) => Number(a) - Number(b));
+                  await setAsyncStorage(AsyncStorageKeys.CART, Array.from(sortedCart).join(','));
+                  return;
+                }
+
+                await setAsyncStorage(AsyncStorageKeys.CART, product?.id?.toString());
+              }}
+              disabled={isInCart}
+            >
+              <TextButton>{isInCart ? 'Already In Cart' : 'Add To Cart'}</TextButton>
             </Button>
           </Footer>
         </>
@@ -248,7 +270,8 @@ const Button = styled.TouchableOpacity`
   width: 100%;
   height: 56px;
   border-radius: 20px;
-  background-color: ${({ theme }) => theme.colors.tertiary};
+  background-color: ${({ theme, disabled }) =>
+    disabled ? theme.colors.gray : theme.colors.tertiary};
   justify-content: center;
   align-items: center;
 `;
