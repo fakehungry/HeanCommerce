@@ -5,6 +5,8 @@ import {
   GetAllProductResponse,
   GetProductDetailsBody,
   GetProductDetailsResponse,
+  GetProductsByCategoryBody,
+  GetProductsByCategoryResponse,
 } from './product.type';
 
 /** GET - Get all products
@@ -120,4 +122,49 @@ const getAllCategoriesSlice = createSlice({
 });
 
 export const getAllCategoriesSliceReducer = getAllCategoriesSlice.reducer;
+/** End of asyncThunk */
+
+/** GET - Get products by category
+ *
+ * @endpoint https://fakestoreapi.com/products/category/:category
+ *
+ * @param {string} body.category - Product category
+ *
+ * @returns {Product[]} List of products
+ */
+export const getProductsByCategory = createAsyncThunk(
+  'product/getProductsByCategory',
+  async (body: GetProductsByCategoryBody) => {
+    const { category } = body;
+    const response = await axios.get(
+      `${process.env.EXPO_PUBLIC_FAKE_STORE_API}/products/category/${category}`
+    );
+
+    return response.data;
+  }
+);
+
+const getProductsByCategorySlice = createSlice({
+  name: 'getProductsByCategory',
+  initialState: {} as GetProductsByCategoryResponse,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getProductsByCategory.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getProductsByCategory.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(getProductsByCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = new Error();
+        state.error.message = action.error.message || 'An error occurred';
+      });
+  },
+});
+
+export const getProductsByCategorySliceReducer = getProductsByCategorySlice.reducer;
 /** End of asyncThunk */

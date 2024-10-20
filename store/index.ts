@@ -2,6 +2,7 @@ import {
   getAllCategoriesSliceReducer,
   getAllProductsSliceReducer,
   getProductDetailsSliceReducer,
+  getProductsByCategorySliceReducer,
 } from '@/features/product/product.slice';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import themeSliceReducer from '../features/theme/theme.slice';
@@ -13,6 +14,7 @@ export const store = configureStore({
       getAllProducts: getAllProductsSliceReducer,
       getProductDetails: getProductDetailsSliceReducer,
       getAllCategories: getAllCategoriesSliceReducer,
+      getProductsByCategory: getProductsByCategorySliceReducer,
     }),
   },
 });

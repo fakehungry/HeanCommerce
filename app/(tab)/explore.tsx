@@ -1,5 +1,6 @@
 import { getAllCategories } from '@/features/product/product.slice';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
+import { Href, router } from 'expo-router';
 import { capitalize } from 'lodash';
 import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
@@ -23,6 +24,11 @@ export default function Explore() {
           {categories?.length >= 4 ? (
             <>
               <Category
+                onPress={() =>
+                  router.push(
+                    `product/category/${categories[0]}` as Href<`product/category/${string}`>
+                  )
+                }
                 style={{
                   backgroundColor: '#53B17570',
                   borderColor: '#53B175',

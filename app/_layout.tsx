@@ -33,6 +33,7 @@ export default function RootLayout() {
           <Stack.Screen name="+not-found" />
 
           <Stack.Screen name="product/[id]" options={{ headerShown: false }} />
+          <Stack.Screen name="product/category/[title]" options={{ headerShown: false }} />
         </Stack>
 
         <StatusBar style="auto" />

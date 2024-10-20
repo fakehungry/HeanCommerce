@@ -24,3 +24,11 @@ export interface GetProductDetailsResponse extends Api<Product> {
 export interface GetAllCategoriesResponse extends Api<string[]> {
   data: string[];
 }
+
+export interface GetProductsByCategoryBody {
+  category: string;
+}
+
+export interface GetProductsByCategoryResponse extends Api<Product[]> {
+  data: Product[];
+}
