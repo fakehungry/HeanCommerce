@@ -42,6 +42,11 @@ export default function Explore() {
                 />
               </Category>
               <Category
+                onPress={() =>
+                  router.push(
+                    `product/category/${categories[1]}` as Href<`product/category/${string}`>
+                  )
+                }
                 style={{
                   backgroundColor: '#F8A44C70',
                   borderColor: '#F8A44C',
@@ -55,6 +60,11 @@ export default function Explore() {
                 />
               </Category>
               <Category
+                onPress={() =>
+                  router.push(
+                    `product/category/${categories[2]}` as Href<`product/category/${string}`>
+                  )
+                }
                 style={{
                   backgroundColor: '#F7A59370',
                   borderColor: '#F7A593',
@@ -68,6 +78,11 @@ export default function Explore() {
                 />
               </Category>
               <Category
+                onPress={() =>
+                  router.push(
+                    `product/category/${categories[3]}` as Href<`product/category/${string}`>
+                  )
+                }
                 style={{
                   backgroundColor: '#B7DFF570',
                   borderColor: '#B7DFF5',
