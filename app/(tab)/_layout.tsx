@@ -56,6 +56,7 @@ export default function TabLayout() {
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons name={focused ? 'cart-sharp' : 'cart-outline'} size={size} color={color} />
           ),
+          headerShown: false,
         }}
       />
       <Tabs.Screen

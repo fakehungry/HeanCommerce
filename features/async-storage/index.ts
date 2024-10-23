@@ -41,3 +41,14 @@ export const setAsyncStorage = async (
     console.error('Error setting data to AsyncStorage', error);
   }
 };
+
+export const removeAsyncStorage = async (
+  key: AsyncStorageKeys,
+  callback?: CallbackWithResult<string>
+) => {
+  try {
+    await AsyncStorage.removeItem(key, callback);
+  } catch (error) {
+    console.error('Error removing data from AsyncStorage', error);
+  }
+};

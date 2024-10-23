@@ -1,3 +1,4 @@
+import { Cart } from '../async-storage/async-storage.type';
 import { Api } from '../core/api.type';
 
 export type Product = {
@@ -7,6 +8,7 @@ export type Product = {
   category: string;
   description: string;
   image: string;
+  amount?: string;
 };
 
 export interface GetAllProductResponse extends Api<Product[]> {
@@ -30,5 +32,13 @@ export interface GetProductsByCategoryBody {
 }
 
 export interface GetProductsByCategoryResponse extends Api<Product[]> {
+  data: Product[];
+}
+
+export interface GetMultipleProductsDetailsBody {
+  carts: Cart[];
+}
+
+export interface GetMultipleProductsDetailsResponse extends Api<Product[]> {
   data: Product[];
 }

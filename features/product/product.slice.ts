@@ -3,10 +3,13 @@ import axios from 'axios';
 import {
   GetAllCategoriesResponse,
   GetAllProductResponse,
+  GetMultipleProductsDetailsBody,
+  GetMultipleProductsDetailsResponse,
   GetProductDetailsBody,
   GetProductDetailsResponse,
   GetProductsByCategoryBody,
   GetProductsByCategoryResponse,
+  Product,
 } from './product.type';
 
 /** GET - Get all products
@@ -167,4 +170,69 @@ const getProductsByCategorySlice = createSlice({
 });
 
 export const getProductsByCategorySliceReducer = getProductsByCategorySlice.reducer;
+/** End of asyncThunk */
+
+/** GET - Get multiple products details by product id
+ *
+ * @endpoint https://fakestoreapi.com/products/:id
+ *
+ * @param {number[]} body.ids - List of
+ *
+ * @returns {Product[]} List of products
+ */
+export const getMultipleProductsDetails = createAsyncThunk(
+  'product/getMultipleProductsDetails',
+  async (body: GetMultipleProductsDetailsBody) => {
+    const { carts } = body;
+    const promises = carts.map((cart) =>
+      axios.get(`${process.env.EXPO_PUBLIC_FAKE_STORE_API}/products/${cart.productId}`)
+    );
+    const responses = await Promise.all(promises);
+    const data = responses.map((response, i) => ({
+      ...response.data,
+      amount: carts[i].amount,
+    }));
+    return data;
+  }
+);
+
+const getMultipleProductsDetailsSlice = createSlice({
+  name: 'getMultipleProductsDetails',
+  initialState: {} as GetMultipleProductsDetailsResponse,
+  reducers: {
+    updateItemAmount: (state, action) => {
+      const { productId, amount } = action.payload;
+      state.data = state.data.map((product) => {
+        if (product.id === productId) {
+          product.amount = amount;
+        }
+
+        return product;
+      });
+    },
+    deleteItem: (state, action) => {
+      const { productId } = action.payload;
+      state.data = state.data.filter((product) => product.id !== productId);
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getMultipleProductsDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getMultipleProductsDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(getMultipleProductsDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = new Error();
+        state.error.message = action.error.message || 'An error occurred';
+      });
+  },
+});
+
+export const { updateItemAmount, deleteItem } = getMultipleProductsDetailsSlice.actions;
+export const getMultipleProductsDetailsSliceReducer = getMultipleProductsDetailsSlice.reducer;
 /** End of asyncThunk */

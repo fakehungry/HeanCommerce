@@ -1,6 +1,7 @@
 import {
   getAllCategoriesSliceReducer,
   getAllProductsSliceReducer,
+  getMultipleProductsDetailsSliceReducer,
   getProductDetailsSliceReducer,
   getProductsByCategorySliceReducer,
 } from '@/features/product/product.slice';
@@ -15,6 +16,7 @@ export const store = configureStore({
       getProductDetails: getProductDetailsSliceReducer,
       getAllCategories: getAllCategoriesSliceReducer,
       getProductsByCategory: getProductsByCategorySliceReducer,
+      getMultipleProductsDetails: getMultipleProductsDetailsSliceReducer,
     }),
   },
 });
